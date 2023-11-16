@@ -21,6 +21,7 @@ namespace Pronia.Controllers
             {
                 Products = productList,
                 Slides = slideList,
+                LatestProducts = productList.OrderByDescending(p => p.Id).Take(8).ToList()
             };
             return View(vm);
         }

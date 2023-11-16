@@ -1247,7 +1247,7 @@
                          role="tabpanel"
                          aria-labelledby="latest-tab">
                         <div class="product-item-wrap row">
-                            @foreach (Product item in Model.Products.OrderByDescending(p=>p.Id).Take(8).ToList())
+                            @foreach (Product item in Model.LatestProducts)
                             {
                                 <div class="col-xl-3 col-md-4 col-sm-6 ">
                                     <div class="product-item">
