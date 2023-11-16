@@ -629,6 +629,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\3.png"
     },
     {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\bg3.webp",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\bg3.webp"
+    },
+    {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\car.png",
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\car.png"
     },
@@ -641,12 +645,76 @@
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\dark.png"
     },
     {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\elden.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\elden.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf1.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf1.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf2.webp",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf2.webp"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf3.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf3.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf4.webp",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf4.webp"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf5.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf5.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf5.webp",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf5.webp"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\gow.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\gow.jpg"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\lol.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\lol.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\mafia.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\mafia.jpg"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\maxpayne.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\maxpayne.png"
+    },
+    {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\quotation.png",
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\quotation.png"
     },
     {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\rdr2.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\rdr2.jpg"
+    },
+    {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\service.png",
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\service.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\skyrim.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\skyrim.png"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\tlou1.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\tlou1.jpg"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\witcher3.jpeg",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\witcher3.jpeg"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\witcher3.webp",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\witcher3.webp"
     },
     {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\js\\main.js",
