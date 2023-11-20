@@ -10,5 +10,10 @@
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public List<ProductImage> ProductImages { get; set; }
+        public List<ProductTag> ProductTags { get; set; }
+        public List<ProductEdition> ProductEditions { get; set; }
+        public List<ProductPlatform> ProductPlatforms { get; set; }
+
+
     }
 }

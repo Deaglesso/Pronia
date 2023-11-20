@@ -114,24 +114,34 @@
                             </div>
                         </div>
                         <div class="selector-wrap color-option">
-                            <span class="selector-title border-bottom-0">Color</span>
+                            <span class="selector-title border-bottom-0">Edition</span>
                             <select class="nice-select wide border-bottom-0 rounded-0">
-                                <option value="default">Black & White</option>
+                                @foreach (var item in Model.Product.ProductEditions)
+                                {
+                                    <option>@item.Edition.Name</option>
+
+                                }
+                                @* <option value="default">Black & White</option>
                                 <option value="blue">Blue</option>
                                 <option value="green">Green</option>
-                                <option value="red">Red</option>
+                                <option value="red">Red</option> *@
                             </select>
                         </div>
                         <div class="selector-wrap size-option">
-                            <span class="selector-title">Size</span>
+                            <span class="selector-title">Platform</span>
                             <select class="nice-select wide rounded-0">
-                                <option value="medium">Medium Size & Poot</option>
+                                @foreach (var item in Model.Product.ProductPlatforms)
+                                {
+                                    <option>@item.Platform.Name</option>
+
+                                }
+                                @* <option value="medium">Medium Size & Poot</option>
                                 <option value="large">Large Size With Poot</option>
-                                <option value="small">Small Size With Poot</option>
+                                <option value="small">Small Size With Poot</option> *@
                             </select>
                         </div>
                         <p class="short-desc">
-                            @Model.Product.Description
+                            @(Model.Product.Description.Length <= 150 ? Model.Product.Description : (Model.Product.Description.Substring(0,150)+"..."))
                         </p>
                         <ul class="quantity-with-btn">
                             <li class="quantity">
@@ -215,7 +225,10 @@
                             <span class="title">Tags :</span>
                             <ul>
                                 <li>
-                                    <a href="#">Furniture</a>
+                                    @foreach (var item in Model.Product.ProductTags)
+                                    {
+                                        <a href="#">@item.Tag.Name</a>
+                                    }
                                 </li>
                             </ul>
                         </div>
@@ -487,7 +500,7 @@
                                 
                                 <div class="swiper-slide product-item">
                                     <div class="product-img">
-                                        <a href="single-product-variable.html">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
                                             <img style="width: 250px; height: 250px; object-fit: cover;" class="primary-img"
                                                  src="~/assets/images/website-images/@item.ProductImages.FirstOrDefault(img=>img.ProductId==item.Id && img.IsPrimary==true).Url"
                                                  alt="Product Images" />

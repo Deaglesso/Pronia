@@ -25,7 +25,7 @@ namespace Pronia.Controllers
             {
                 return BadRequest();
             }
-            Product product =_context.Products.Include(x=>x.Category).Include(x=>x.ProductImages).FirstOrDefault(x => x.Id == id);
+            Product product =_context.Products.Include(x=>x.Category).Include(x=>x.ProductImages).Include(x=>x.ProductTags).ThenInclude(x=>x.Tag).Include(x => x.ProductEditions).ThenInclude(x => x.Edition).Include(x => x.ProductPlatforms).ThenInclude(x => x.Platform).FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return NotFound();
