@@ -1101,6 +1101,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\skyrim2.jpg"
     },
     {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\slidetest.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\slidetest.png"
+    },
+    {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\tlou1.jpg",
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\tlou1.jpg"
     },

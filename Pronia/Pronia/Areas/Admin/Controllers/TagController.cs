@@ -43,5 +43,60 @@ namespace Pronia.Areas.Admin.Controllers
             TempData["ToasterMessage"] = $"{tag.Name} tag created successfully!";
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> Update(int id)
+        {
+
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            Tag Tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            if (Tag == null)
+            {
+                return NotFound();
+            }
+            return View(Tag);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, Tag newTag)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            Tag oldTag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            if (oldTag == null) return NotFound();
+
+            bool result = await _context.Tags.AnyAsync(x => x.Name == newTag.Name && x.Id != id);
+            if (result)
+            {
+                ModelState.AddModelError("Name", "This name already used in other Tag");
+                return View();
+
+            }
+            oldTag.Name = newTag.Name;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            Tag Tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            if (Tag == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tags.Remove(Tag);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

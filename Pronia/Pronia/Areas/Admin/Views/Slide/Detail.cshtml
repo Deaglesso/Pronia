@@ -1,0 +1,19 @@
+﻿@model Slide
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="~/assets/images/website-images/@Model.Img" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4 class="card-title">Name: @Model.Name</h4>
+                <h5 class="card-title">Subname: @Model.Subname</h5>
+                <p class="card-text">Description: @Model.Description</p>
+                <p class="card-text">Order: @Model.Order</p>
+            </div>
+        </div>
+    </div>
+</div>

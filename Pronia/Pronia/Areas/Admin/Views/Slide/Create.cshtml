@@ -1,0 +1,41 @@
+﻿@model Slide
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create Slide</h4>
+            
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Subname">Subname</label>
+                    <input asp-for="Subname" class="form-control" placeholder="Subname">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Description</label>
+                    <input asp-for="Description" class="form-control" placeholder="Description">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Order">Order</label>
+                    <input asp-for="Order" class="form-control" placeholder="Order">
+                </div>
+                <div class="form-group">
+                    <label asp-for="File">Photo</label>
+                    <input asp-for="File" class="form-control" placeholder="Upload Photo">
+                </div>
+                
+                
+                
+                
+                @* <div class="form-group">
+                    <label for="exampleTextarea1">Textarea</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                </div> *@
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button class="btn btn-light">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
