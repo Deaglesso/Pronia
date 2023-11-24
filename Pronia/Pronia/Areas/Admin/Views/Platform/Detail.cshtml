@@ -1,0 +1,34 @@
+﻿@model Platform
+<div class="d-flex justify-content-center">
+    <p class="btn btn-dark btn-lg ">@Model.Name <br><br> Product Count: @Model.ProductPlatforms.Count()</p>
+</div>
+<div class="product-box d-flex justify-content-evenly flex-wrap align-content-around">
+
+    @foreach (var item in Model.ProductPlatforms)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="~/assets/images/website-images/@item.Product.ProductImages.FirstOrDefault(x=>x.IsPrimary==true).Url" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@item.Product.Name</h5>
+                <p class="card-text">Description: @item.Product.Description</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">SKU: @item.Product.SKU</li>
+                <li class="list-group-item">
+                    Tags:
+                    @foreach (var tag in item.Product.ProductTags)
+                    {
+                        <a>@tag.Tag.Name</a>
+                    }
+                </li>
+                <li class="list-group-item">$@item.Product.Price</li>
+            </ul>
+            <div class="card-body">
+                <a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="card-link btn btn-dark btn-lg">Product page</a>
+            </div>
+        </div>
+    }
+
+
+
+</div>

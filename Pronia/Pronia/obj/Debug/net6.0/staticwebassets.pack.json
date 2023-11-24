@@ -749,6 +749,14 @@
       "PackagePath": "staticwebassets\\assets\\images\\sidebar\\banner\\1-270x300.jpg"
     },
     {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\slider\\.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\slider\\.jpg"
+    },
+    {
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\slider\\0049424e-da95-4877-a098-e81093aa25ad.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\slider\\0049424e-da95-4877-a098-e81093aa25ad.jpg"
+    },
+    {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\slider\\bg\\1-1.jpg",
       "PackagePath": "staticwebassets\\assets\\images\\slider\\bg\\1-1.jpg"
     },
@@ -1021,24 +1029,8 @@
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\elden2.webp"
     },
     {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf1.png",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf1.png"
-    },
-    {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf2.webp",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf2.webp"
-    },
-    {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf3.png",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf3.png"
-    },
-    {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf4.webp",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf4.webp"
-    },
-    {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf5.png",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\fnaf5.png"
+      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\f1617cf7-a822-4ce2-a6dc-9729ea6d9311.png",
+      "PackagePath": "staticwebassets\\assets\\images\\website-images\\f1617cf7-a822-4ce2-a6dc-9729ea6d9311.png"
     },
     {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf5.webp",
@@ -1099,10 +1091,6 @@
     {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\skyrim2.jpg",
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\skyrim2.jpg"
-    },
-    {
-      "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\slidetest.png",
-      "PackagePath": "staticwebassets\\assets\\images\\website-images\\slidetest.png"
     },
     {
       "Id": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\tlou1.jpg",
