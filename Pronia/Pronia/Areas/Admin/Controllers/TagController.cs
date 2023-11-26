@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
 
@@ -26,18 +27,22 @@ namespace Pronia.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Tag tag)
+        public async Task<IActionResult> Create(CreateTagVM tagVM)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            bool res = await _context.Tags.AnyAsync(x => x.Name == tag.Name);
+            bool res = await _context.Tags.AnyAsync(x => x.Name == tagVM.Name);
             if (res) 
             {
                 ModelState.AddModelError("Name", "Already exists.");
                 return View();
             }
+            Tag tag = new Tag
+            {
+                Name = tagVM.Name,
+            };
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
             TempData["ToasterMessage"] = $"{tag.Name} tag created successfully!";
@@ -50,15 +55,22 @@ namespace Pronia.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
-            Tag Tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
-            if (Tag == null)
+            Tag tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            return View(Tag);
+            UpdateTagVM tagVM = new UpdateTagVM 
+            {
+                Name=tag.Name,
+                ProductTags = tag.ProductTags,
+
+            };
+            
+            return View(tagVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Tag newTag)
+        public async Task<IActionResult> Update(int id, UpdateTagVM newTag)
         {
             if (!ModelState.IsValid)
             {
@@ -104,5 +116,6 @@ namespace Pronia.Areas.Admin.Controllers
             if (tag is null) return NotFound();
             return View(tag);
         }
+
     }
 }

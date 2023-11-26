@@ -1,0 +1,62 @@
+﻿@model List<Product>
+@{
+    int count = 0;
+}
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title">Slide List</h4>
+                <a asp-action="Create" class="btn btn-inverse-success btn-fw "><i class="mdi mdi-plus-circle-outline"></i> <h6>Create</h6></a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+
+                            <th class="d-flex justify-content-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            count++;
+                            <tr>
+                                <td>@count</td>
+                                <td>
+                                    <img style=" width:150px; height:150px; object-fit:contain" src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(x=>x.IsPrimary==true)?.Url"
+                                         alt="Inner Image" />
+                                </td>
+                                <td>@item.Name</td>
+                                <td class="text-success"> @item.Price.ToString("C")</td>
+                                <td> @item.Category.Name </td>
+                                <td class="d-flex justify-content-end" style=" height:200px; ">
+                                    <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-inverse-primary btn-fw" style="display: inline-flex; align-items: center; margin-left: 6px; ">
+                                        <i class="mdi mdi-information-outline"></i> <span style="margin-top: -1px; margin-left: 3px">Details</span>
+                                    </a>
+
+
+
+                                    <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-inverse-warning btn-fw" style="display: inline-flex; align-items: center; margin-left: 6px;">
+                                        <i class="mdi mdi-pencil"></i> <span style="margin-top: -1px; margin-left: 3px">Update</span>
+                                    </a>
+
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-inverse-danger btn-fw" style="display: inline-flex; align-items: center; margin-left: 6px;">
+                                        <i class="mdi mdi-delete"></i> <span style="margin-top: -1px; margin-left: 3px">Delete</span>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

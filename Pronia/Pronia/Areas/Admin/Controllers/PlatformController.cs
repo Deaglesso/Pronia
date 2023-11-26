@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
 using System.Drawing;
@@ -26,19 +27,21 @@ namespace Pronia.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Platform platform)
+        public async Task<IActionResult> Create(CreatePlatformVM platformVM)
         {
             if (!ModelState.IsValid)
             {
                 return View();
 
             }
-            bool result = await _context.Platforms.AnyAsync(x => x.Name == platform.Name);
+            bool result = await _context.Platforms.AnyAsync(x => x.Name == platformVM.Name);
             if (result)
             {
                 ModelState.AddModelError("Name", "Already exists.");
                 return View();
             }
+            Platform platform = new Platform { Name = platformVM.Name };
+
             await _context.Platforms.AddAsync(platform);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -48,16 +51,22 @@ namespace Pronia.Areas.Admin.Controllers
         {
             if (id <= 0) return BadRequest();
 
-            Platform Platform = await _context.Platforms.FirstOrDefaultAsync(c => c.Id == id);
+            Platform platform = await _context.Platforms.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (Platform is null) return NotFound();
+            if (platform is null) return NotFound();
 
-            return View(Platform);
+            UpdatePlatformVM platformVM = new UpdatePlatformVM 
+            {
+                Name = platform.Name,
+                ProductPlatforms = platform.ProductPlatforms,
+            };
+
+            return View(platformVM);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Platform Platform)
+        public async Task<IActionResult> Update(int id, UpdatePlatformVM platformVM)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +76,7 @@ namespace Pronia.Areas.Admin.Controllers
             Platform existed = await _context.Platforms.FirstOrDefaultAsync(e => e.Id == id);
             if (existed is null) return NotFound();
 
-            bool result = _context.Platforms.Any(c => c.Name == Platform.Name && c.Id != id);
+            bool result = _context.Platforms.Any(c => c.Name == platformVM.Name && c.Id != id);
             if (result)
             {
                 ModelState.AddModelError("Name", "Platform already exists");
@@ -75,7 +84,7 @@ namespace Pronia.Areas.Admin.Controllers
             }
 
 
-            existed.Name = Platform.Name;
+            existed.Name = platformVM.Name;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

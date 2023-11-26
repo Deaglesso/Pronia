@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
+using Pronia.Migrations;
 
 namespace Pronia.Areas.Admin.Controllers
 {
@@ -25,20 +27,21 @@ namespace Pronia.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Category Category)
+        public async Task<IActionResult> Create(CreateCategoryVM categoryVM)
         {
             if (!ModelState.IsValid)
             {
                 return View();
 
             }
-            bool result = await _context.Categories.AnyAsync(x => x.Name == Category.Name);
+            bool result = await _context.Categories.AnyAsync(x => x.Name == categoryVM.Name);
             if (result)
             {
                 ModelState.AddModelError("Name", "Already exists.");
                 return View();
             }
-            await _context.Categories.AddAsync(Category);
+            Category category = new Category { Name = categoryVM.Name };
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
 
@@ -56,10 +59,16 @@ namespace Pronia.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(category);
+            UpdateCategoryVM categoryVM = new UpdateCategoryVM 
+            {
+                Name = category.Name,
+                Products = category.Products,
+                
+            };
+            return View(categoryVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(int id,Category newCategory)
+        public async Task<IActionResult> Update(int id,UpdateCategoryVM newCategory)
         {
             if (!ModelState.IsValid)
             {

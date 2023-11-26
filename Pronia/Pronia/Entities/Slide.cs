@@ -16,7 +16,6 @@ namespace Pronia.Entities
 
         public int Order { get; set; }
 
-        [NotMapped]
-        public IFormFile? File { get; set; }
+        
     }
 }

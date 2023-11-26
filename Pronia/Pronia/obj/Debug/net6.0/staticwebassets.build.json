@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "1FBfXsU6zYp3d4OSq5jqzvnZO9DhFQD6hph4TXLccr0=",
+  "Hash": "s//5sn2xCSUO+tBI+w5eEDoaYq1DcDZnlPBhD2SqCbA=",
   "Source": "Pronia",
   "BasePath": "_content/Pronia",
   "Mode": "Default",
@@ -4401,6 +4401,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\f1617cf7-a822-4ce2-a6dc-9729ea6d9311.png"
+    },
+    {
+      "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\f1aed256-f026-4825-bf2c-04ac4864b34a.png",
+      "SourceId": "Pronia",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\",
+      "BasePath": "_content/Pronia",
+      "RelativePath": "assets/images/website-images/f1aed256-f026-4825-bf2c-04ac4864b34a.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\f1aed256-f026-4825-bf2c-04ac4864b34a.png"
+    },
+    {
+      "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\f38ece05-4b23-4de0-87a6-8478144bdd3e.png",
+      "SourceId": "Pronia",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\",
+      "BasePath": "_content/Pronia",
+      "RelativePath": "assets/images/website-images/f38ece05-4b23-4de0-87a6-8478144bdd3e.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\f38ece05-4b23-4de0-87a6-8478144bdd3e.png"
     },
     {
       "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\fnaf5.webp",

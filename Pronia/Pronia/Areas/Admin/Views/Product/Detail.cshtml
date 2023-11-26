@@ -1,0 +1,121 @@
+﻿@model Product
+
+<div class="container mt-4">
+    <h2 class="display-4">@Model.Name</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Product Details</h3>
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+
+                       
+
+                        <dt class="col-sm-4">Price</dt>
+                        <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+
+                        <dt class="col-sm-4">SKU</dt>
+                        <dd class="col-sm-8">@Model.SKU</dd>
+
+                        <dt class="col-sm-4">Category</dt>
+                        <dd class="col-sm-8">@Model.Category.Name</dd>
+                        
+                    </dl>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Description</h3>
+                    <p class="col-sm-8">@Model.Description</p>
+
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Tags</h3>
+                    <ul class="list-unstyled">
+                        @foreach (var tag in Model.ProductTags)
+                        {
+                            <li>@tag.Tag.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Editions</h3>
+                    <ul class="list-unstyled">
+                        @foreach (var ed in Model.ProductEditions)
+                        {
+                            <li>@ed.Edition.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Platform</h3>
+                    <ul class="list-unstyled">
+                        @foreach (var pl in Model.ProductPlatforms)
+                        {
+                            <li>@pl.Platform.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            
+            
+        </div>
+
+       
+        <div class="col-md-6">
+            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var (index, image) in Model.ProductImages.Select((value, i) => (i, value)))
+                    {
+                        <div class="carousel-item @(index == 0 ? "active" : "")">
+                            <img src="~/assets/images/website-images/@image.Url" alt="Product Image" class="d-block w-100 img-fluid rounded">
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev" style="background-color: grey;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next" style="background-color: grey;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">Images</h3>
+                    <div class="card-deck d-flex">
+                        @foreach (var image in Model.ProductImages)
+                        {
+                            <img src="~/assets/images/website-images/@image.Url" alt="Product Image" class="card-img-top img-fluid rounded" style="max-height: 200px; object-fit: contain;">
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <p class="mt-4">
+            <a asp-action="Index" class="btn btn-dark btn-lg">Back to List</a>
+        </p>
+
+
+    </div>
+</div>

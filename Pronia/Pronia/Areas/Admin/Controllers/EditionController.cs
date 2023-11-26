@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
 
@@ -25,19 +26,23 @@ namespace Pronia.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Edition edition)
+        public async Task<IActionResult> Create(CreatePlatformVM editionVM)
         {
             if (!ModelState.IsValid)
             {
                 return View();
 
             }
-            bool result = await _context.Editions.AnyAsync(x => x.Name == edition.Name);
+            bool result = await _context.Editions.AnyAsync(x => x.Name == editionVM.Name);
             if (result)
             {
                 ModelState.AddModelError("Name","Already exists.");
                 return View();
             }
+            Edition edition = new Edition
+            {
+                Name = editionVM.Name,
+            };
             await _context.Editions.AddAsync(edition);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -47,16 +52,22 @@ namespace Pronia.Areas.Admin.Controllers
         {
             if (id <= 0) return BadRequest();
 
-            Edition Edition = await _context.Editions.FirstOrDefaultAsync(s => s.Id == id);
+            Edition edition = await _context.Editions.FirstOrDefaultAsync(s => s.Id == id);
 
-            if (Edition is null) return NotFound();
+            if (edition is null) return NotFound();
 
-            return View(Edition);
+            UpdateEditionVM editionVM = new UpdateEditionVM
+            {
+                Name= edition.Name,
+                ProductEditions = edition.ProductEditions,
+            };
+
+            return View(editionVM);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Edition Edition)
+        public async Task<IActionResult> Update(int id, UpdateEditionVM editionVM)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +77,7 @@ namespace Pronia.Areas.Admin.Controllers
             Edition existed = await _context.Editions.FirstOrDefaultAsync(e => e.Id == id);
             if (existed is null) return NotFound();
 
-            bool result = _context.Editions.Any(c => c.Name == Edition.Name && c.Id != id);
+            bool result = _context.Editions.Any(c => c.Name == editionVM.Name && c.Id != id);
             if (result)
             {
                 ModelState.AddModelError("Name", "Edition already exists");
@@ -74,7 +85,7 @@ namespace Pronia.Areas.Admin.Controllers
             }
 
 
-            existed.Name = Edition.Name;
+            existed.Name = editionVM.Name;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -90,6 +101,7 @@ namespace Pronia.Areas.Admin.Controllers
             if (existed is null) return NotFound();
 
             _context.Editions.Remove(existed);
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -98,8 +110,12 @@ namespace Pronia.Areas.Admin.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var Edition = await _context.Editions.Include(s => s.ProductEditions).ThenInclude(p => p.Product).ThenInclude(pi => pi.ProductImages).Include(x=>x.ProductEditions).ThenInclude(x=>x.Product).ThenInclude(x=>x.ProductTags).ThenInclude(x=>x.Tag).FirstOrDefaultAsync(x => x.Id == id);
+            
             if (Edition is null) return NotFound();
+
             return View(Edition);
         }
+
     }
+
 }
