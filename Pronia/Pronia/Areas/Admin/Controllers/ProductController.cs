@@ -4,6 +4,7 @@ using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
 using Pronia.Utilities.Extensions;
+using Pronia.ViewModels;
 
 namespace Pronia.Areas.Admin.Controllers
 {
@@ -60,24 +61,70 @@ namespace Pronia.Areas.Admin.Controllers
 
                 return View(productVM);
             }
-
-            foreach (var item in productVM.TagIds)
+            if (productVM.TagIds is not null)
             {
-                if (!( await _context.Tags.AnyAsync(x=>x.Id==item)))
+                foreach (var item in productVM.TagIds)
                 {
-                    productVM.CategoryList = await _context.Categories.ToListAsync();
-                    productVM.TagList = await _context.Tags.ToListAsync();
-                    productVM.EditionList = await _context.Editions.ToListAsync();
-                    productVM.PlatformList = await _context.Platforms.ToListAsync();
-                    ModelState.AddModelError("TagIds", "These tags does not exist.");
+                    if (!(await _context.Tags.AnyAsync(x => x.Id == item)))
+                    {
+                        productVM.CategoryList = await _context.Categories.ToListAsync();
+                        productVM.TagList = await _context.Tags.ToListAsync();
+                        productVM.EditionList = await _context.Editions.ToListAsync();
+                        productVM.PlatformList = await _context.Platforms.ToListAsync();
+                        ModelState.AddModelError("TagIds", "These tags does not exist.");
 
-                    return View(productVM);
+                        return View(productVM);
+                    }
                 }
             }
+            if (!productVM.MainImage.CheckFileType("image/"))
+            {
+                ModelState.AddModelError("MainImage","Only images allowed.");
+                productVM.CategoryList = await _context.Categories.ToListAsync();
+                productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.EditionList = await _context.Editions.ToListAsync();
+                productVM.PlatformList = await _context.Platforms.ToListAsync();
+                return View(productVM);
+            }
+            if (!productVM.MainImage.CheckFileSize(1))
+            {
+                ModelState.AddModelError("MainImage", "Only images below 1MB allowed.");
+                productVM.CategoryList = await _context.Categories.ToListAsync();
+                productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.EditionList = await _context.Editions.ToListAsync();
+                productVM.PlatformList = await _context.Platforms.ToListAsync();
+                return View(productVM);
+            }
 
+            if (!productVM.HoverImage.CheckFileType("image/"))
+            {
+                ModelState.AddModelError("HoverImage", "Only images allowed.");
+                productVM.CategoryList = await _context.Categories.ToListAsync();
+                productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.EditionList = await _context.Editions.ToListAsync();
+                productVM.PlatformList = await _context.Platforms.ToListAsync();
+                return View(productVM);
+            }
+            if (!productVM.HoverImage.CheckFileSize(1))
+            {
+                ModelState.AddModelError("HoverImage", "Only images below 1MB allowed.");
+                productVM.CategoryList = await _context.Categories.ToListAsync();
+                productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.EditionList = await _context.Editions.ToListAsync();
+                productVM.PlatformList = await _context.Platforms.ToListAsync();
+                return View(productVM);
+            }
 
-
-
+            ProductImage mainImage = new ProductImage
+            {
+                IsPrimary = true,
+                Url = await productVM.MainImage.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images"),
+            };
+            ProductImage hoverImage = new ProductImage
+            {
+                IsPrimary = false,
+                Url = await productVM.HoverImage.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images"),
+            };
 
             Product product = new Product
             {
@@ -89,40 +136,69 @@ namespace Pronia.Areas.Admin.Controllers
                 Category = productVM.Category,
                 ProductTags = new List<ProductTag>(),
                 ProductEditions = new List<ProductEdition>(),
-                ProductPlatforms = new List<ProductPlatform>()
+                ProductPlatforms = new List<ProductPlatform>(),
+                ProductImages = new List<ProductImage> { mainImage,hoverImage }
                 
             };
+            TempData["ImageMessage"] = "";
+            foreach (IFormFile image in productVM.AddImages)
+            {
+                if (!image.CheckFileType("image/"))
+                {
+                    TempData["ImageMessage"] += $" <p class=\"btn btn-inverse-danger btn-fw myParagraph\" style=\"display: inline-flex; align-items: center;\" >{image.FileName} file's type is not image.<span style=\"margin-top: -1px; margin-left: 3px\" class=\"close-button text-white\" onclick=\"closeParagraph()\"><i class=\"mdi mdi-close-circle-outline\"></i></span></p>\r\n\r\n                    <script> function closeParagraph() {{ var paragraphs = document.getElementsByClassName(\"myParagraph\");  for (var i = 0; i < paragraphs.length; i++) {{ paragraphs[i].style.display = \"none\"; }} }} setTimeout(closeParagraph, 10000); </script>";
+                    continue;
+                }
+                if (!image.CheckFileSize(1))
+                {
+                    TempData["ImageMessage"] += $" <p class=\"btn btn-inverse-danger btn-fw myParagraph\" style=\"display: inline-flex; align-items: center;\" >{image.FileName} file's size is larger than 1MB.<span style=\"margin-top: -1px; margin-left: 3px\" class=\"close-button text-white\" onclick=\"closeParagraph()\"><i class=\"mdi mdi-close-circle-outline\"></i></span></p>\r\n\r\n                    <script> function closeParagraph() {{ var paragraphs = document.getElementsByClassName(\"myParagraph\");  for (var i = 0; i < paragraphs.length; i++) {{ paragraphs[i].style.display = \"none\"; }} }} setTimeout(closeParagraph, 10000); </script>";
 
-            foreach (var item in productVM.TagIds)
-            {
-                ProductTag productTag = new ProductTag
-                {
-                    TagId = item
-                };
-                product.ProductTags.Add(productTag);
+                    continue;
+                }
+
+                product.ProductImages.Add(new ProductImage { IsPrimary = null, Url = await image.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images") });
             }
-            foreach (var item in productVM.EditionIds)
+            if (productVM.TagIds is not null)
             {
-                ProductEdition productEdition = new ProductEdition
+                foreach (var item in productVM.TagIds)
                 {
-                    EditionId = item
-                };
-                product.ProductEditions.Add(productEdition);
+                    ProductTag productTag = new ProductTag
+                    {
+                        TagId = item
+                    };
+                    product.ProductTags.Add(productTag);
+                }
             }
-            foreach (var item in productVM.PlatformIds)
+            if (productVM.EditionIds is not null)
             {
-                ProductPlatform productPlatform = new ProductPlatform
+                foreach (var item in productVM.EditionIds)
                 {
-                    PlatformId = item
-                };
-                product.ProductPlatforms.Add(productPlatform);
+                    ProductEdition productEdition = new ProductEdition
+                    {
+                        EditionId = item
+                    };
+                    product.ProductEditions.Add(productEdition);
+                }
+
             }
+            if (productVM.PlatformIds is not null)
+            {
+                foreach (var item in productVM.PlatformIds)
+                {
+                    ProductPlatform productPlatform = new ProductPlatform
+                    {
+                        PlatformId = item
+                    };
+                    product.ProductPlatforms.Add(productPlatform);
+                }
+            }
+            
 
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+
         }
 
         public async Task<IActionResult> Update(int id)

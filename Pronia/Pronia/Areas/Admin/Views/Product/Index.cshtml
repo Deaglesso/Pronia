@@ -7,6 +7,11 @@
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <h4 class="card-title">Slide List</h4>
+                @Html.Raw(TempData["ImageMessage"])
+                
+
+                    
+                
                 <a asp-action="Create" class="btn btn-inverse-success btn-fw "><i class="mdi mdi-plus-circle-outline"></i> <h6>Create</h6></a>
             </div>
             <div class="table-responsive">

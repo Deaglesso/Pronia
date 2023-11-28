@@ -6,6 +6,22 @@
 
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 <div class="form-group">
+                    <label asp-for="MainImage">Main Image:</label>
+                    <input asp-for="MainImage" class="form-control" >
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="MainImage"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoverImage">Hover Image:</label>
+                    <input asp-for="HoverImage" class="form-control">
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="HoverImage"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AddImages">Additional Images:</label>
+                    <input asp-for="AddImages" class="form-control">
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="AddImages"></span>
+                </div>
+
+                <div class="form-group">
                     <label asp-for="Name">Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Name">
                     <span class="text-danger fs-6 fst-italic" asp-validation-for="Name"></span>

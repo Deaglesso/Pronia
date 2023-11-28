@@ -19,6 +19,9 @@ namespace Pronia.Areas.Admin.ViewModel
         public List<int>? TagIds { get; set; }
         public List<int>? PlatformIds { get; set; }
         public List<int>? EditionIds { get; set; }
+        public IFormFile MainImage { get; set; }
+        public IFormFile HoverImage { get; set; }
+        public List<IFormFile>? AddImages { get; set; }
 
         public Category? Category { get; set; }
         public List<Category>? CategoryList { get; set; }
