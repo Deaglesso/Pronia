@@ -204,7 +204,7 @@ namespace Pronia.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
-            Product existed = await _context.Products.Include(x=>x.ProductTags).Include(x=>x.ProductEditions).Include(x=>x.ProductPlatforms).FirstOrDefaultAsync(x=>x.Id == id);
+            Product existed = await _context.Products.Include(x=>x.ProductTags).Include(x=>x.ProductEditions).Include(x=>x.ProductPlatforms).Include(x=>x.ProductImages).FirstOrDefaultAsync(x=>x.Id == id);
             if (existed is null) return NotFound();
             UpdateProductVM productVM = new UpdateProductVM
             {
@@ -214,6 +214,7 @@ namespace Pronia.Areas.Admin.Controllers
                 SKU = existed.SKU,
                 CategoryId = existed.CategoryId,
                 Category = existed.Category,
+                ProductImages = existed.ProductImages,
                 TagIds = existed.ProductTags.Select(x=>x.TagId).ToList(),
                 EditionIds = existed.ProductEditions.Select(x=>x.EditionId).ToList(),
                 PlatformIds = existed.ProductPlatforms.Select(x=>x.PlatformId).ToList(),
@@ -231,11 +232,16 @@ namespace Pronia.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(int id,UpdateProductVM productVM) 
         {
+            Product existed = await _context.Products.Include(x=>x.ProductTags).Include(x => x.ProductEditions).Include(x => x.ProductPlatforms).Include(x=>x.ProductImages).FirstOrDefaultAsync(x=>x.Id == id);
             if (!ModelState.IsValid)
             {
+                productVM.CategoryList = await _context.Categories.ToListAsync();
+                productVM.EditionList = await _context.Editions.ToListAsync();
+                productVM.PlatformList = await _context.Platforms.ToListAsync();
+                productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.ProductImages = existed.ProductImages;
                 return View(productVM);
             }
-            Product existed = await _context.Products.Include(x=>x.ProductTags).Include(x => x.ProductEditions).Include(x => x.ProductPlatforms).FirstOrDefaultAsync(x=>x.Id == id);
             if (existed is null) return NotFound();
             if (!(await _context.Categories.AnyAsync(x => x.Id == productVM.CategoryId)))
             {
@@ -243,14 +249,75 @@ namespace Pronia.Areas.Admin.Controllers
                 productVM.EditionList = await _context.Editions.ToListAsync();
                 productVM.PlatformList = await _context.Platforms.ToListAsync();
                 productVM.TagList = await _context.Tags.ToListAsync();
+                productVM.ProductImages = existed.ProductImages;
+
                 ModelState.AddModelError("CategoryId", "This category does not exist.");
                  
                 return View(productVM);
             }
 
+            if (productVM.MainImage is not null)
+            {
+                if (!productVM.MainImage.CheckFileType("image/"))
+                {
+                    ModelState.AddModelError("MainImage", "Only images allowed.");
+                    productVM.CategoryList = await _context.Categories.ToListAsync();
+                    productVM.TagList = await _context.Tags.ToListAsync();
+                    productVM.EditionList = await _context.Editions.ToListAsync();
+                    productVM.PlatformList = await _context.Platforms.ToListAsync();
+                    productVM.ProductImages = existed.ProductImages;
+
+                    return View(productVM);
+                }
+                if (!productVM.MainImage.CheckFileSize(1))
+                {
+                    ModelState.AddModelError("MainImage", "Only images below 1MB allowed.");
+                    productVM.CategoryList = await _context.Categories.ToListAsync();
+                    productVM.TagList = await _context.Tags.ToListAsync();
+                    productVM.EditionList = await _context.Editions.ToListAsync();
+                    productVM.PlatformList = await _context.Platforms.ToListAsync();
+                    productVM.ProductImages = existed.ProductImages;
+
+                    return View(productVM);
+                }
+
+                
+            }
+            if (productVM.HoverImage is not null)
+            {
+                if (!productVM.HoverImage.CheckFileType("image/"))
+                {
+                    ModelState.AddModelError("HoverImage", "Only images allowed.");
+                    productVM.CategoryList = await _context.Categories.ToListAsync();
+                    productVM.TagList = await _context.Tags.ToListAsync();
+                    productVM.EditionList = await _context.Editions.ToListAsync();
+                    productVM.PlatformList = await _context.Platforms.ToListAsync();
+                    productVM.ProductImages = existed.ProductImages;
+
+                    return View(productVM);
+                }
+                if (!productVM.HoverImage.CheckFileSize(1))
+                {
+                    ModelState.AddModelError("HoverImage", "Only images below 1MB allowed.");
+                    productVM.CategoryList = await _context.Categories.ToListAsync();
+                    productVM.TagList = await _context.Tags.ToListAsync();
+                    productVM.EditionList = await _context.Editions.ToListAsync();
+                    productVM.PlatformList = await _context.Platforms.ToListAsync();
+                    productVM.ProductImages = existed.ProductImages;
+
+                    return View(productVM);
+                }
+            }
+
+            
+
+
+
+
 
             //tag
             _context.ProductTags.RemoveRange(existed.ProductTags.Where(x => productVM.TagIds == null || !productVM.TagIds.Contains(x.TagId)));
+
 
 
             if (productVM.TagIds is not null)
@@ -265,6 +332,8 @@ namespace Pronia.Areas.Admin.Controllers
                             productVM.EditionList = await _context.Editions.ToListAsync();
                             productVM.PlatformList = await _context.Platforms.ToListAsync();
                             productVM.TagList = await _context.Tags.ToListAsync();
+                            productVM.ProductImages = existed.ProductImages;
+
                             ModelState.AddModelError("TagIds", "These tags does not exist.");
 
                             return View(productVM);
@@ -294,6 +363,8 @@ namespace Pronia.Areas.Admin.Controllers
                             productVM.EditionList = await _context.Editions.ToListAsync();
                             productVM.PlatformList = await _context.Platforms.ToListAsync();
                             productVM.TagList = await _context.Tags.ToListAsync();
+                            productVM.ProductImages = existed.ProductImages;
+
                             ModelState.AddModelError("EditionIds", "These editions does not exist.");
 
                             return View(productVM);
@@ -324,6 +395,8 @@ namespace Pronia.Areas.Admin.Controllers
                             productVM.EditionList = await _context.Editions.ToListAsync();
                             productVM.PlatformList = await _context.Platforms.ToListAsync();
                             productVM.TagList = await _context.Tags.ToListAsync();
+                            productVM.ProductImages = existed.ProductImages;
+
                             ModelState.AddModelError("PlatformIds", "These editions does not exist.");
 
                             return View(productVM);
@@ -337,6 +410,56 @@ namespace Pronia.Areas.Admin.Controllers
                 }
             }
 
+
+            if(productVM.MainImage is not null)
+            {
+                string filename = await productVM.MainImage.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                ProductImage existedImg = existed.ProductImages.FirstOrDefault(x=>x.IsPrimary==true);
+                existedImg.Url.Delete(_env.WebRootPath, "assets", "images", "website-images");
+                existed.ProductImages.Remove(existedImg);
+
+                existed.ProductImages.Add(new ProductImage { IsPrimary = true, Url = filename });
+            }
+
+            if (productVM.HoverImage is not null)
+            {
+                string filename = await productVM.HoverImage.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                ProductImage existedImg = existed.ProductImages.FirstOrDefault(x => x.IsPrimary == false);
+                existedImg.Url.Delete(_env.WebRootPath, "assets", "images", "website-images");
+                existed.ProductImages.Remove(existedImg);
+
+                existed.ProductImages.Add(new ProductImage { IsPrimary = false, Url = filename });
+            }
+
+            if (productVM.ImageIds is null)
+            {
+                productVM.ImageIds = new List<int>();
+            }
+            List<ProductImage> removable =  existed.ProductImages.Where(x=>!productVM.ImageIds.Exists(y=>y==x.Id)&&x.IsPrimary==null).ToList();
+            foreach (var item in removable)
+            {
+                item.Url.Delete(_env.WebRootPath, "assets", "images", "website-images");
+                existed.ProductImages.Remove(item);
+            }
+
+            TempData["ImageMessage"] = "";
+
+            foreach (IFormFile image in productVM.AddImages ?? new List<IFormFile>())
+            {
+                if (!image.CheckFileType("image/"))
+                {
+                    TempData["ImageMessage"] += $" <p class=\"btn btn-inverse-danger btn-fw myParagraph\" style=\"display: inline-flex; align-items: center;\" >{image.FileName} file's type is not image.<span style=\"margin-top: -1px; margin-left: 3px\" class=\"close-button text-white\" onclick=\"closeParagraph()\"><i class=\"mdi mdi-close-circle-outline\"></i></span></p>\r\n\r\n                    <script> function closeParagraph() {{ var paragraphs = document.getElementsByClassName(\"myParagraph\");  for (var i = 0; i < paragraphs.length; i++) {{ paragraphs[i].style.display = \"none\"; }} }} setTimeout(closeParagraph, 10000); </script>";
+                    continue;
+                }
+                if (!image.CheckFileSize(1))
+                {
+                    TempData["ImageMessage"] += $" <p class=\"btn btn-inverse-danger btn-fw myParagraph\" style=\"display: inline-flex; align-items: center;\" >{image.FileName} file's size is larger than 1MB.<span style=\"margin-top: -1px; margin-left: 3px\" class=\"close-button text-white\" onclick=\"closeParagraph()\"><i class=\"mdi mdi-close-circle-outline\"></i></span></p>\r\n\r\n                    <script> function closeParagraph() {{ var paragraphs = document.getElementsByClassName(\"myParagraph\");  for (var i = 0; i < paragraphs.length; i++) {{ paragraphs[i].style.display = \"none\"; }} }} setTimeout(closeParagraph, 10000); </script>";
+
+                    continue;
+                }
+
+                existed.ProductImages.Add(new ProductImage { IsPrimary = null, Url = await image.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images") });
+            }
 
             existed.Name = productVM.Name;
             existed.Description = productVM.Description;
@@ -352,10 +475,13 @@ namespace Pronia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            Product product = await _context.Products.Include(x=>x.ProductImages).FirstOrDefaultAsync(x => x.Id == id);
             if (product is null) return NotFound();
 
-
+            foreach (var item in product.ProductImages ?? new List<ProductImage>())
+            {
+                item.Url.Delete(_env.WebRootPath, "assets", "images", "website-images");
+            }
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

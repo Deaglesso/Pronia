@@ -6,6 +6,38 @@
             <h4 class="card-title">Create Slide</h4>
 
             <form class="forms-sample" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label asp-for="MainImage">Main Image:</label> <br />
+                    <img style="width:150px;height:150px;" src="~/assets/images/website-images/@Model.ProductImages.FirstOrDefault(x=>x.IsPrimary==true)?.Url" />
+                    <input asp-for="MainImage" class="form-control">
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="MainImage"></span>
+                </div>
+                <div class="form-group">
+
+                    <label asp-for="HoverImage">Hover Image:</label> <br />
+                    <img style="width:150px;height:150px;" src="~/assets/images/website-images/@Model.ProductImages.FirstOrDefault(x=>x.IsPrimary==false)?.Url" />
+                    <input asp-for="HoverImage" class="form-control">
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="HoverImage"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AddImages">Additional Images:</label> <br />
+                    <div class=" d-flex">
+                    @foreach (var item in Model.ProductImages.Where(x=>x.IsPrimary==null))
+                    {
+                        <div class="position-relative">
+                        <img style="width:150px;height:150px;" src="~/assets/images/website-images/@item.Url" />
+                        <input asp-for="ImageIds" type="hidden" value="@item.Id">
+                                <button style="right:5px;top:5px;" type="button" class="image-delete btn btn-inverse-danger btn-icon position-absolute"><i class="mdi mdi-close-circle"></i>  </button>
+                        </div>
+
+                    }
+                    </div>
+                    <input asp-for="AddImages" class="form-control">
+                    <span class="text-danger fs-6 fst-italic" asp-validation-for="AddImages"></span>
+                </div>
+
+
                 <div class="form-group">
                     <label asp-for="Name">Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Name">
@@ -64,8 +96,20 @@
                 <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
                 </div> *@
                 <button type="submit" class="btn btn-primary me-2">Submit</button>
-                <button asp-action="Index" asp-controller="Slide" class="btn btn-light">Cancel</button>
+                <button asp-action="Index" asp-controller="Product" class="btn btn-light">Cancel</button>
             </form>
         </div>
     </div>
 </div>
+
+
+@section ImageScript{
+    <script>
+        var btns = document.querySelectorAll(".image-delete")
+        btns.forEach(b => {
+            b.addEventListener("click", function () {
+                b.parentElement.remove();
+            })
+        })
+    </script>
+}

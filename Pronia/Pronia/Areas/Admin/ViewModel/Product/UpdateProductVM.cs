@@ -16,12 +16,19 @@ namespace Pronia.Areas.Admin.ViewModel
         public decimal Price { get; set; }
         public string SKU { get; set; }
         public int CategoryId { get; set; }
+        public List<ProductImage>? ProductImages { get; set; }
 
         public List<int>? TagIds { get; set; }
         public List<int>? PlatformIds { get; set; }
         public List<int>? EditionIds { get; set; }
+        public List<int>? ImageIds { get; set; }
+
+        public IFormFile? MainImage { get; set; }
+        public IFormFile? HoverImage { get; set; }
+        public List<IFormFile>? AddImages { get; set; }
 
         public Category? Category { get; set; }
+
         public List<Category>? CategoryList { get; set; }
 
         public List<Tag>? TagList { get; set; }
