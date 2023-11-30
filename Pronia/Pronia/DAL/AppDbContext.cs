@@ -17,6 +17,7 @@ namespace Pronia.DAL
         public DbSet<Edition> Editions { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<ProductPlatform> ProductPlatforms { get; set; }
+        public DbSet<Setting> Settings { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     }
 

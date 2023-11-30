@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "oPrfCmyiUfv1hz5GdBaehB8pKCp6eDbFPHpG5umD7CE=",
+  "Hash": "3LKtrvE1ZKfmd5fpURnH66eKTzT52yutbC8CAJM64MM=",
   "Source": "Pronia",
   "BasePath": "_content/Pronia",
   "Mode": "Default",
@@ -4284,6 +4284,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\2ae3c5c8-8cae-4d1d-945c-25b28b42d51c.png"
     },
     {
+      "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\2b243d1c-8399-4def-b810-fdd23742aa08.png",
+      "SourceId": "Pronia",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\",
+      "BasePath": "_content/Pronia",
+      "RelativePath": "assets/images/website-images/2b243d1c-8399-4def-b810-fdd23742aa08.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\2b243d1c-8399-4def-b810-fdd23742aa08.png"
+    },
+    {
       "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\3.png",
       "SourceId": "Pronia",
       "SourceType": "Discovered",
@@ -4505,23 +4522,6 @@
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\b8cbae8f-7772-4516-b164-17c0272e99cc.png"
     },
     {
-      "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\be3e6fb7-0f8e-43d3-8b0b-f92fad401635.jpg",
-      "SourceId": "Pronia",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\",
-      "BasePath": "_content/Pronia",
-      "RelativePath": "assets/images/website-images/be3e6fb7-0f8e-43d3-8b0b-f92fad401635.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\be3e6fb7-0f8e-43d3-8b0b-f92fad401635.jpg"
-    },
-    {
       "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\bg3.webp",
       "SourceId": "Pronia",
       "SourceType": "Discovered",
@@ -4639,23 +4639,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\dark.png"
-    },
-    {
-      "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\e3374adc-4b60-4f0e-9a78-51faa25a3fd7.png",
-      "SourceId": "Pronia",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\",
-      "BasePath": "_content/Pronia",
-      "RelativePath": "assets/images/website-images/e3374adc-4b60-4f0e-9a78-51faa25a3fd7.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\e3374adc-4b60-4f0e-9a78-51faa25a3fd7.png"
     },
     {
       "Identity": "D:\\CFF\\Pronia\\Pronia\\Pronia\\wwwroot\\assets\\images\\website-images\\elden.png",
