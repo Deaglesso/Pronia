@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddScoped<LayoutService>();
+builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 var app = builder.Build();
 app.UseStaticFiles();
 
