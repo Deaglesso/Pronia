@@ -57,5 +57,10 @@ namespace Pronia.Utilities.Extensions
 
 
         }
+        public static string FormatCapitalizeTrim(this string capitalize) 
+        {
+            capitalize = capitalize.Trim();
+            return char.ToUpper(capitalize[0]) + capitalize.Substring(1);
+        }
     }
 }

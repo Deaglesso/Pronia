@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pronia.Entities;
+using Pronia.Utilities.Extensions;
 using Pronia.ViewModels;
 using System.Text.RegularExpressions;
 
@@ -43,10 +44,10 @@ namespace Pronia.Controllers
 
             AppUser user = new AppUser 
             {
-                Name = userVM.Name,
+                Name = userVM.Name.FormatCapitalizeTrim(),
                 Email = userVM.Email,
-                Surname = userVM.Surname,
-                UserName = userVM.Name,
+                Surname = userVM.Surname.FormatCapitalizeTrim(),
+                UserName = userVM.Username,
                 Gender = userVM.Gender,
 
             };
