@@ -103,7 +103,7 @@ namespace Pronia.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        public async Task<IActionResult> ManageItemBasket(int id,string mode)
+        public async Task<IActionResult> ManageItemBasket(int id,string mode,string lastctrl)
         {
             if (id <= 0) return BadRequest();
 
@@ -148,7 +148,8 @@ namespace Pronia.Controllers
 
             Response.Cookies.Append("Basket", json);
 
-            return RedirectToAction("Index", "Basket");
+
+            return RedirectToAction("Index", lastctrl);
         }
 
         public ActionResult GetBasket() 

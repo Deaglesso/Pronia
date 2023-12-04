@@ -395,9 +395,22 @@
                                     </button>
                                     <ul class="dropdown-menu"
                                         aria-labelledby="stickysettingButton">
-                                        <li>
-                                            <a class="dropdown-item" href="my-account.html">My account</a>
-                                        </li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li>
+                                                <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Log out</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a class="dropdown-item" href="my-account.html">Register</a>
+                                            </li>
+                                        }
+                                        
                                         <li>
                                             <a class="dropdown-item" href="login-register.html">Login | Register</a>
                                         </li>
@@ -775,11 +788,14 @@
                                 @{
                                     decimal total = 0;
                                 }
+                                @{
+                                    string ctrl = ViewContext.RouteData.Values["controller"] as string;
+                                }
                                 @foreach (var item in Model.Item2)
                                 {
                                     total += item.Price * item.Count;
                                         <li class="minicart-product">
-                            <a class="product-item_remove" asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="full">
+                            <a class="product-item_remove" asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="full" asp-route-lastctrl="@ctrl"> 
                                     <i class="pe-7s-close"
                                        data-tippy="Remove"
                                        data-tippy-inertia="true"

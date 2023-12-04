@@ -40,12 +40,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @{
+                                        string ctrl = ViewContext.RouteData.Values["controller"] as string;
+                                    }
                                     @foreach (var item in Model)
                                     {
+
                                         total += item.Subtotal;
                                         <tr>
                                             <td class="product_remove">
-                                                <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="full">
+                                                <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="full" asp-route-lastctrl="@ctrl">
                                                     <i class="pe-7s-close"
                                                        data-tippy="Remove"
                                                        data-tippy-inertia="true"
@@ -56,21 +60,21 @@
                                                 </a>
                                             </td>
                                             <td class="product-thumbnail">
-                                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">
+                                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id" asp-route-lastctrl="@ctrl">
                                                     <img style="width:150px;height:150px;" src="~/assets/images/website-images/@item.Image"
                                                          alt="Cart Thumbnail" />
                                                 </a>
                                             </td>
                                             <td class="product-name">
-                                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">@item.Name</a>
+                                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id" asp-route-lastctrl="@ctrl">@item.Name</a>
                                             </td>
                                             <td class="product-price">
                                                 <span class="amount">$@item.Price</span>
                                             </td>
                                             <td class="quantity">
                                                 <div class="d-flex btn btn-secondary justify-content-between">
-                                                    
-                                                        <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="minus">
+
+                                                    <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="minus" asp-route-lastctrl="@ctrl">
                                                     <div class="text-white">
 
                                                         <i class="fa fa-minus"></i>
@@ -80,9 +84,9 @@
                                                         <p>
                                                         @item.Count
                                                         </p>
-                                                         
-                                                           
-                                                        <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="plus">
+
+
+                                                    <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="plus" asp-route-lastctrl="@ctrl">
                                                     <div class="text-white">
 
                                                         <i class="fa fa-plus"></i>
