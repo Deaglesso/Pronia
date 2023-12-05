@@ -21,6 +21,7 @@ namespace Pronia.ViewModels
         [MaxLength(25)]
         public string Username { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
         [Compare("Password")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
@@ -19,12 +20,13 @@ namespace Pronia.Areas.Admin.Controllers
             _context = context;
             _env = env;
         }
-
+        [Authorize("Superadmin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Product> products = await _context.Products.Include(x=>x.ProductImages).Include(x=>x.Category).ToListAsync();
             return View(products);
         }
+        [Authorize("Superadmin,Moderator")]
         public async Task<IActionResult> Create() 
         {
             CreateProductVM productVM = new CreateProductVM 
@@ -200,7 +202,7 @@ namespace Pronia.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
-
+        [Authorize("Superadmin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
@@ -472,7 +474,7 @@ namespace Pronia.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        [Authorize("Superadmin")]
         public async Task<IActionResult> Delete(int id)
         {
             Product product = await _context.Products.Include(x=>x.ProductImages).FirstOrDefaultAsync(x => x.Id == id);
@@ -486,7 +488,7 @@ namespace Pronia.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize("Superadmin,Moderator")]
         public async Task<IActionResult> Detail(int id)
         {
             Product product = await _context.Products
