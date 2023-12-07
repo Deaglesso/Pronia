@@ -62,6 +62,11 @@ namespace Pronia.Controllers
                 ModelState.AddModelError(string.Empty, errormsg);
                 return View();
             }
+            if (Request.Cookies["Basket"] != null)
+            {
+                Response.Cookies.Delete("Basket");
+                
+            }
             if (returnUrl is not null)
             {
                 return Redirect(returnUrl);
@@ -142,6 +147,11 @@ namespace Pronia.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            if (Request.Cookies["Basket"] != null)
+            {
+                Response.Cookies.Delete("Basket");
+
+            }
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }

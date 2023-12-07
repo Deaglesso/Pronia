@@ -1,49 +1,84 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pronia.DAL;
 using Pronia.Entities;
 using Pronia.ViewModels;
+using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Pronia.Controllers
 {
     public class BasketController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BasketController(AppDbContext context)
+        public BasketController(AppDbContext context,UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
             List<BasketItemVM> items = new List<BasketItemVM>();
 
-            string oldBasket = Request.Cookies["Basket"];
-
-
-            if (oldBasket is not null)
+            if (User.Identity.IsAuthenticated)
             {
-                List <BasketCookieVM> cookies = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
-                foreach (var item in cookies)
+                AppUser user = await _userManager.Users.Include(x => x.BasketItems)
+                    .ThenInclude(y => y.Product)
+                    .ThenInclude(z => z.ProductImages.Where(img => img.IsPrimary == true))
+                    .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+
+                foreach (var item in user.BasketItems)
                 {
-                    Product product = await _context.Products.Include(x=>x.ProductImages.Where(y=>y.IsPrimary == true)).FirstOrDefaultAsync(x=>x.Id==item.Id);
-                    if (product != null)
+                    items.Add(new BasketItemVM
                     {
-                        BasketItemVM itemVM = new BasketItemVM 
+                        Id = item.ProductId,
+                        Price = item.Product.Price,
+                        Count = item.Count,
+                        Name = item.Product.Name,
+                        Subtotal = item.Count * item.Product.Price,
+                        Image = item.Product.ProductImages[0].Url,
+
+
+                    }); 
+
+                }
+            }
+            else
+            {
+                string oldBasket = Request.Cookies["Basket"];
+
+
+                if (oldBasket is not null)
+                {
+                    List<BasketCookieVM> cookies = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
+                    foreach (var item in cookies)
+                    {
+                        Product product = await _context.Products.Include(x => x.ProductImages.Where(y => y.IsPrimary == true)).FirstOrDefaultAsync(x => x.Id == item.Id);
+                        if (product != null)
                         {
-                            Id = item.Id,
-                            Name = product.Name,
-                            Image = product.ProductImages.FirstOrDefault().Url,
-                            Price = product.Price,
-                            Count = item.Count,
-                            Subtotal = product.Price * item.Count
-                        };
-                        items.Add(itemVM);
+                            BasketItemVM itemVM = new BasketItemVM
+                            {
+                                Id = item.Id,
+                                Name = product.Name,
+                                Image = product.ProductImages.FirstOrDefault().Url,
+                                Price = product.Price,
+                                Count = item.Count,
+                                Subtotal = product.Price * item.Count
+                            };
+                            items.Add(itemVM);
+                        }
                     }
                 }
             }
+
+
+            
 
             return View(items);
         }
@@ -56,27 +91,13 @@ namespace Pronia.Controllers
 
             if (product == null) return NotFound();
 
-            List<BasketCookieVM> basketVM = new List<BasketCookieVM>();
-
-            string oldBasket = Request.Cookies["Basket"];
-            
-            if (oldBasket == null)
+            if (!User.Identity.IsAuthenticated)
             {
-                BasketCookieVM vm = new BasketCookieVM
-                {
-                    Id = id,
-                    Count = count
-                };
+                List<BasketCookieVM> basketVM = new List<BasketCookieVM>();
 
-                basketVM.Add(vm);
-            }
-            else
-            {
-                basketVM = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
+                string oldBasket = Request.Cookies["Basket"];
 
-                BasketCookieVM old = basketVM.FirstOrDefault(x=>x.Id == id);
-
-                if (old == null)
+                if (oldBasket == null)
                 {
                     BasketCookieVM vm = new BasketCookieVM
                     {
@@ -88,17 +109,70 @@ namespace Pronia.Controllers
                 }
                 else
                 {
-                    old.Count++;
+                    basketVM = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
+
+                    BasketCookieVM old = basketVM.FirstOrDefault(x => x.Id == id);
+
+                    if (old == null)
+                    {
+                        BasketCookieVM vm = new BasketCookieVM
+                        {
+                            Id = id,
+                            Count = count
+                        };
+
+                        basketVM.Add(vm);
+                    }
+                    else
+                    {
+                        old.Count++;
+                    }
+
+
+                }
+                
+
+
+
+                string json = JsonConvert.SerializeObject(basketVM);
+
+                Response.Cookies.Append("Basket", json);
+            }
+            else
+            {
+                AppUser user = await _userManager.Users.Include(x => x.BasketItems)
+                    .FirstOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                if (user == null) return NotFound();
+
+
+                BasketItem item = user.BasketItems.FirstOrDefault(x => x.ProductId == product.Id);
+
+                if (item is null)
+                {
+                    item = new BasketItem
+                    {
+                        AppUserId = user.Id,
+                        ProductId = product.Id,
+                        Count = 1,
+                        Price = product.Price,
+
+                    };
+                    user.BasketItems.Add(item);
+
+                }
+                else
+                {
+                    item.Count++;
                 }
 
-                
+
+
+                await _context.SaveChangesAsync();
             }
 
-            
-            
-            string json = JsonConvert.SerializeObject(basketVM);
 
-            Response.Cookies.Append("Basket",json);
+            
 
             return RedirectToAction("Index","Home");
         }
@@ -111,21 +185,19 @@ namespace Pronia.Controllers
 
             if (product == null) return NotFound();
 
-            string oldBasket = Request.Cookies["Basket"];
-
-            List<BasketCookieVM> basketVM = new List<BasketCookieVM>();
-            
-            basketVM = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
-
-            BasketCookieVM old = basketVM.FirstOrDefault(x => x.Id == id);
-
-            if (old != null)
+            if (User.Identity.IsAuthenticated)
             {
-                if(mode == "full")
+                AppUser user = await _userManager.Users.Include(x => x.BasketItems)
+                    .ThenInclude(y => y.Product)
+                    .ThenInclude(z => z.ProductImages.Where(img => img.IsPrimary == true))
+                    .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                BasketItem old = user.BasketItems.FirstOrDefault(x => x.ProductId == product.Id);
+                if (mode == "full")
                 {
-                    basketVM.Remove(old);
+                    user.BasketItems.Remove(old);
                 }
-                else if(mode == "minus")
+                else if (mode == "minus")
                 {
                     if (old.Count > 0)
                     {
@@ -133,20 +205,56 @@ namespace Pronia.Controllers
                     }
                     if (old.Count == 0)
                     {
-                        basketVM.Remove(old);
+                        user.BasketItems.Remove(old);
                     }
                 }
-                else if(mode == "plus")
+                else if (mode == "plus")
                 {
                     old.Count++;
                 }
-                
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                string oldBasket = Request.Cookies["Basket"];
 
+                List<BasketCookieVM> basketVM = new List<BasketCookieVM>();
+
+                basketVM = JsonConvert.DeserializeObject<List<BasketCookieVM>>(oldBasket);
+
+                BasketCookieVM old = basketVM.FirstOrDefault(x => x.Id == id);
+
+                if (old != null)
+                {
+                    if (mode == "full")
+                    {
+                        basketVM.Remove(old);
+                    }
+                    else if (mode == "minus")
+                    {
+                        if (old.Count > 0)
+                        {
+                            old.Count--;
+                        }
+                        if (old.Count == 0)
+                        {
+                            basketVM.Remove(old);
+                        }
+                    }
+                    else if (mode == "plus")
+                    {
+                        old.Count++;
+                    }
+
+
+                }
+
+                string json = JsonConvert.SerializeObject(basketVM);
+
+                Response.Cookies.Append("Basket", json);
             }
 
-            string json = JsonConvert.SerializeObject(basketVM);
-
-            Response.Cookies.Append("Basket", json);
+            
 
 
             return RedirectToAction("Index", lastctrl);

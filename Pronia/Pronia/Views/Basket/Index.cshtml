@@ -47,6 +47,7 @@
                                     {
 
                                         total += item.Subtotal;
+                                        
                                         <tr>
                                             <td class="product_remove">
                                                 <a asp-action="ManageItemBasket" asp-controller="Basket" asp-route-id="@item.Id" asp-route-mode="full" asp-route-lastctrl="@ctrl">
