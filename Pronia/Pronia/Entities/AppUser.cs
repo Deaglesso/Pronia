@@ -8,6 +8,7 @@ namespace Pronia.Entities
         public string Surname { get; set; }
         public string Gender { get; set; }
         public List<BasketItem> BasketItems { get; set; }
+        public List<Order> Orders { get; set; }
 
     }
 }

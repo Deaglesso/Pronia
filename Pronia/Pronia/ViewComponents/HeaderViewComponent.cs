@@ -33,7 +33,7 @@ namespace Pronia.ViewComponents
             if (_http.HttpContext.User.Identity.IsAuthenticated)
             {
 
-                AppUser user = await _userManager.Users.Include(x => x.BasketItems)
+                AppUser user = await _userManager.Users.Include(x => x.BasketItems.Where(i => i.OrderId == null))
                     .ThenInclude(y => y.Product)
                     .ThenInclude(z => z.ProductImages.Where(img => img.IsPrimary == true))
                     .FirstOrDefaultAsync(u => u.Id == _http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
