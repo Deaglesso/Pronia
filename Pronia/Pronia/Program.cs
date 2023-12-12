@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Pronia.DAL;
 using Pronia.Entities;
 using Pronia.Intefaces;
+using Pronia.Middlewares;
 using Pronia.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,7 @@ app.UseAuthorization();
 
 app.UseStaticFiles();
 
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.MapControllerRoute(
     "admin",

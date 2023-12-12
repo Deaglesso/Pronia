@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pronia.DAL;
 using Pronia.Entities;
+using Pronia.Utilities.Exceptions;
 using Pronia.ViewModels;
 
 namespace Pronia.Controllers
@@ -16,6 +17,7 @@ namespace Pronia.Controllers
         }
         public IActionResult Index()
         {
+            throw new WrongRequestException("Test");
             List<Slide> slideList = _context.Slides.OrderBy(s=>s.Order).ToList();
             List<Product> productList = _context.Products.Include(x=>x.ProductImages).ToList();
             HomeVM vm = new HomeVM
@@ -30,6 +32,11 @@ namespace Pronia.Controllers
         public IActionResult About()
         {
             return View();
+        }
+        public IActionResult ErrorPage(string error = "An error occured")
+        {
+            return View(model:error);
+
         }
     }
 }

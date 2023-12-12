@@ -4,6 +4,7 @@ using Pronia.Areas.Admin.ViewModel;
 using Pronia.DAL;
 using Pronia.Entities;
 using Pronia.Migrations;
+using Pronia.ViewModels;
 
 namespace Pronia.Areas.Admin.Controllers
 {
@@ -16,11 +17,23 @@ namespace Pronia.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            List<Category> CategoryList = await _context.Categories.Include(x => x.Products).ToListAsync();
-
-            return View(CategoryList);
+            int limit = 4;
+            double count = await _context.Categories.CountAsync();
+            if (page > (int)Math.Ceiling(count / limit) || page <= 0)
+            {
+                return BadRequest();
+            }
+            List<Category> CategoryList = await _context.Categories.Skip((page - 1) * limit).Take(limit).Include(x => x.Products).ToListAsync();
+            PaginationVM<Category> paginationVM = new PaginationVM<Category>
+            {
+                Items = CategoryList,
+                TotalPage = (int)Math.Ceiling(count / limit),
+                CurrentPage = page,
+                Limit = limit
+            };
+            return View(paginationVM);
         }
         public IActionResult Create()
         {

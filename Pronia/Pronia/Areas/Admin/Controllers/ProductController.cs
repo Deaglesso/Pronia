@@ -21,10 +21,26 @@ namespace Pronia.Areas.Admin.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            List<Product> products = await _context.Products.Include(x=>x.ProductImages).Include(x=>x.Category).ToListAsync();
-            return View(products);
+            int limit = 4;
+            double count = await _context.Products.CountAsync();
+            if (page> (int)Math.Ceiling(count / limit) || page <= 0)
+            {
+                return BadRequest();
+            }
+
+            List <Product> products = await _context.Products.Skip((page - 1) * limit).Take(limit)
+                .Include(x=>x.ProductImages)
+                .Include(x=>x.Category).ToListAsync();
+            PaginationVM<Product> paginationVM = new PaginationVM<Product>
+            {
+                Items = products,
+                TotalPage = (int)Math.Ceiling(count/limit),
+                CurrentPage = page,
+                Limit = limit
+            };
+            return View(paginationVM);
         }
         public async Task<IActionResult> Create() 
         {
